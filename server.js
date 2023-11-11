@@ -15,6 +15,14 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-app.use("/register", require("./middlewares/processUserData.js"), require("./routes/register.js"));
+app.use(
+  "/users/register",
+  require("./middlewares/processUserData.js"),
+  require("./routes/users/register.js")
+);
+
+app.use("/users/requests", require("./routes/staff/admin/updateRequest.js"));
+// app.use("/admin/approve");
+// app.use("/admin/refuse");
 
 app.listen(PORT, console.log(`App Listening to port ${PORT}`));
