@@ -27,7 +27,7 @@ const handleNewUser = async (req, res) => {
     };
 
     await createUserRequest(user);
-    res.status(201).json({ success: `New user ${user.username} created` });
+    res.status(201).json({ success: `New user Request From ${user.username} ` });
   } catch (error) {
     console.error("Error handling new user:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
