@@ -38,5 +38,15 @@ app.use("/shift", require("./routes/shifts.js"));
 app.use("/feedback", require("./routes/feedback.js"));
 // add new role
 app.use("/roles", require("./routes/roles.js"));
+// add a new medical record
+app.use("/record", require("./routes/medicalRecords.js"));
+// add new medication schedule
+app.use("/schedule", require("./routes/medSchedule.js"));
+// add new Product
+app.use("/product", require("./routes/products.js"));
+// add new purchase request
+app.use("/purchaseRequest", require("./routes/purchase.js"));
+// add new supplier
+app.use("/supplier", require("./routes/supplier.js"));
 
 app.listen(PORT, console.log(`App Listening to port ${PORT}`));

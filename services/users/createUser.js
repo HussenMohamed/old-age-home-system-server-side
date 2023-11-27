@@ -2,11 +2,20 @@ const { pool } = require("../../model/db.config");
 
 const createUserRequest = async (user) => {
   try {
-    const { username, password, email, phoneNumber, role } = user;
+    const {
+      username,
+      password,
+      email,
+      phoneNumber,
+      role,
+      staffRoleId,
+      relatedResident,
+      relationShip,
+    } = user;
     // Assuming you have a hashed password available
     const [result] = await pool.query(
-      "INSERT INTO userrequests (Username, Password, Email, PhoneNumber, Role) VALUES (?, ?, ?, ?, ?)",
-      [username, password, email, phoneNumber, role]
+      "INSERT INTO userrequests (Username, Password, Email, PhoneNumber, Role, StaffRoleID, RelatedResidentID, Relationship) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [username, password, email, phoneNumber, role, staffRoleId, relatedResident, relationShip]
     );
 
     const insertedUserId = result.insertId;

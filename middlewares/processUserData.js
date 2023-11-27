@@ -1,6 +1,15 @@
 // Middleware function to process user data
 const processUserData = (req, res, next) => {
-  const { username, password, email, phoneNumber, role } = req.body;
+  const {
+    username,
+    password,
+    email,
+    phoneNumber,
+    role,
+    staffRoleId,
+    relatedResident,
+    relationShip,
+  } = req.body;
 
   // Create userRequest object
   req.userRequest = {
@@ -9,6 +18,9 @@ const processUserData = (req, res, next) => {
     email,
     phoneNumber,
     role,
+    staffRoleId,
+    relatedResident,
+    relationShip,
   };
 
   // Continue to the next middleware or route handler

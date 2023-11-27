@@ -44,11 +44,9 @@ const handleUserRequestAction = async (res, reqState, reqId) => {
   if (reqState === "Accepted") {
     // If the request is accepted, add the user to the system
     const userId = await acceptUser(reqId);
-    return res
-      .status(200)
-      .json({
-        message: `User request Accepted successfully and added to the users and apropriate Role table`,
-      });
+    return res.status(200).json({
+      message: `User request Accepted successfully and added to the users and apropriate Role table`,
+    });
   } else {
     // If the request is refused, return a success response
     return res.status(200).json({ message: `User request Refused successfully` });
