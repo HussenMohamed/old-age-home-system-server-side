@@ -1,10 +1,22 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const credentials = require("./middlewares/credentials.js");
+const cors = require("cors");
+const corsOptions = require("./config/corsOptions");
+
 const PORT = process.env.PORT || 4500;
 
 // Logger
 app.use(morgan("tiny"));
+
+// Handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+app.use(credentials);
+
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
 
 // built-in middlware to handle form data
 app.use(express.urlencoded({ extended: false }));
@@ -12,6 +24,8 @@ app.use(express.urlencoded({ extended: false }));
 // built-in middlware for json
 app.use(express.json());
 
+// middlware for cookies
+app.use(cookieParser());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -20,6 +34,12 @@ app.use(
   require("./middlewares/processUserData.js"),
   require("./routes/users/register.js")
 );
+app.use("/users/login", require("./routes/login.js"));
+app.use("/users/refresh", require("./routes/refresh.js"));
+app.use("/users/logout", require("./routes/logout.js"));
+
+// any route after this line will use the verifyJWT middleware
+// app.use(require("../../../middlewares/verifyJWT.js"));
 
 // handle user requests
 app.use("/users/requests", require("./routes/staff/admin/updateRequest.js"));
