@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const credentials = require("./middlewares/credentials.js");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
+const cron = require("node-cron");
 
 const PORT = process.env.PORT || 4500;
 
@@ -19,7 +20,7 @@ app.use(credentials);
 app.use(cors(corsOptions));
 
 // built-in middlware to handle form data
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // built-in middlware for json
 app.use(express.json());
@@ -50,23 +51,35 @@ app.use(
   require("./middlewares/processResidentData.js"),
   require("./routes/residents.js")
 );
+// add new Staff Member
+app.use("/staff", require("./routes/staff/staffMembers.js"));
 // add new room
 app.use("/room", require("./routes/rooms.js"));
 // add new shift
 app.use("/shift", require("./routes/shifts.js"));
+// Tasks
+app.use("/tasks", require("./routes/tasks/tasks.js"));
+// Family Members
+app.use("/familyMembers", require("./routes/familyMembers.js"));
 // post feedback
 app.use("/feedback", require("./routes/feedback.js"));
 // add new role
 app.use("/roles", require("./routes/roles.js"));
-// add a new medical record
+// medical records
 app.use("/record", require("./routes/medicalRecords.js"));
 // add new medication schedule
-app.use("/schedule", require("./routes/medSchedule.js"));
+app.use("/medication", require("./routes/medSchedule.js"));
 // add new Product
 app.use("/product", require("./routes/products.js"));
 // add new purchase request
 app.use("/purchaseRequest", require("./routes/purchase.js"));
 // add new supplier
 app.use("/supplier", require("./routes/supplier.js"));
+
+// medications to tasks schedule
+// Define the cron job to run every minute
+// cron.schedule("*/10 * * * * *", require("./cronSchedules/medicationsToTasks.js"));
+// Define the cron job to run at 23:59 every day
+// cron.schedule("59 23 * * *", require("./cronSchedules/clearIsTaskCreated.js"));
 
 app.listen(PORT, console.log(`App Listening to port ${PORT}`));

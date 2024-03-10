@@ -12,11 +12,11 @@ const addResidentToDb = async (resident) => {
       maritalStatus,
       numberOfChildren,
       roomNumber,
-    } = resident;
-
+      ResponsibleStaffID,
+    } = resident ?? {};
     const [result] = await pool.execute(
-      `INSERT INTO resident (Name, BirthDate, Age, Nationality, UNCN, PermanentAddress, MaritalStatus, NumberOfChildren, RoomNumber) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO resident (Name, BirthDate, Age, Nationality, UNCN, PermanentAddress, MaritalStatus, NumberOfChildren, RoomNumber, hasMedicalRecord, ResponsibleStaffID) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, false, ?)`,
       [
         name,
         birthDate,
@@ -27,9 +27,20 @@ const addResidentToDb = async (resident) => {
         maritalStatus,
         numberOfChildren,
         roomNumber,
+        ResponsibleStaffID,
       ]
     );
 
+    if (result.affectedRows === 1) {
+      console.log("Data inserted successfully.");
+      // now increment the occupancy of the room by one
+      const [result2] = await pool.execute(
+        `UPDATE room SET Occupancy = Occupancy + 1 WHERE RoomNumber = ?`,
+        [roomNumber]
+      );
+    } else {
+      console.log("Failed to insert data.");
+    }
     const insertedResidentId = result.insertId;
 
     // You can return the inserted resident ID or any other relevant information

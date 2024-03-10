@@ -4,7 +4,7 @@ const { checkDuplicate, createUserRequest } = require("../services/service.js");
 const handleNewUser = async (req, res) => {
   try {
     const { userRequest } = req;
-
+    console.log(userRequest);
     // // Check if any value in the userRequest object is falsy (not existing)
     // if (Object.values(userRequest).some((value) => !value)) {
     //   // If any value is falsy, return a 400 status with an error message

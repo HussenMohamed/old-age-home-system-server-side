@@ -10,6 +10,7 @@ const processResidentData = (req, res, next) => {
     maritalStatus,
     numberOfChildren,
     roomNumber,
+    ResponsibleStaffID,
   } = req.body;
 
   // Create userRequest object
@@ -23,6 +24,7 @@ const processResidentData = (req, res, next) => {
     maritalStatus,
     numberOfChildren,
     roomNumber,
+    ResponsibleStaffID,
   };
   console.log();
   // Continue to the next middleware or route handler

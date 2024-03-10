@@ -29,13 +29,13 @@ const createProduct = async (
   description,
   stockThreshold,
   expirationDate,
-  supplierId
+  currentStock
 ) => {
   try {
     // Execute the SQL query to insert a product into the database
     const [result] = await pool.execute(
-      `INSERT INTO inventory (ProductName, category, Description, StockThreshold, ExpirationDate, SupplierID) VALUES (?,?,?,?,?,?)`,
-      [productName, category, description, stockThreshold, expirationDate, supplierId]
+      `INSERT INTO products (ProductName, category, Description, StockThreshold, ExpirationDate, CurrentStock) VALUES (?,?,?,?,?,?)`,
+      [productName, category, description, stockThreshold, expirationDate, currentStock]
     );
 
     // Check if the insertion was successful

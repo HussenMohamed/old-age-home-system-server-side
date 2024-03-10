@@ -7,12 +7,13 @@ require("dotenv").config();
 const handleLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
+    console.log(username, password);
     if (!username || !password) {
       return res.status(400).json({ message: "Username and Password are required" });
     }
 
     const foundUser = await findUser(username);
-    if (!foundUser) return res.sendStatus(401); // Unauthorized
+    if (!foundUser) return res.status(401).json({ message: "Username not found" }); // Unauthorized
     //evaluate password
     const match = await bcrypt.compare(password, foundUser.Password);
     if (match) {
