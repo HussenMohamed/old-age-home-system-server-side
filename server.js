@@ -6,6 +6,7 @@ const credentials = require("./middlewares/credentials.js");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const cron = require("node-cron");
+const webpush = require("web-push");
 
 const PORT = process.env.PORT || 4500;
 
@@ -82,4 +83,27 @@ app.use("/supplier", require("./routes/supplier.js"));
 // Define the cron job to run at 23:59 every day
 // cron.schedule("59 23 * * *", require("./cronSchedules/clearIsTaskCreated.js"));
 
-app.listen(PORT, console.log(`App Listening to port ${PORT}`));
+app.listen(PORT, function () {
+  console.log(`App Listening to port ${PORT}`);
+});
+
+const apiKeys = {
+  publicKey:
+    "BCGVWKjjbQeKtX4NsJj6tIIsQyxtIty5qrjXqpYJTSLXwR2M68jTiPVErWw0OIzr9munTkYT7oaU2e4SPJ2gU9M",
+  privateKey: "8Tn1d-SjqzZCC49hPCkGtoS9847_6SzImjjyu1JkSEo",
+};
+
+webpush.setVapidDetails("mailto:hussen88gamer88@gmail.com", apiKeys.publicKey, apiKeys.privateKey);
+
+const subDatabse = [];
+
+app.post("/save-subscription", (req, res) => {
+  console.log("Saving subscription request body: " + req.body);
+  subDatabse.push(req.body);
+  res.json({ status: "Success", message: "Subscription saved!" });
+});
+
+app.get("/send-notification", (req, res) => {
+  webpush.sendNotification(subDatabse[0], "Hello world");
+  res.json({ statue: "Success", message: "Message sent to push service" });
+});
